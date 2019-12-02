@@ -28,9 +28,18 @@
     >
       <q-list>
         <q-item-label header>Меню</q-item-label>
-        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+        <q-item clickable v-ripple to="/">
           <q-item-section avatar>
-            <q-icon name="school" />
+            <q-icon name="account_balance" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>На главную</q-item-label>
+            <q-item-label caption>перейти на главную страницу</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple to="/question">
+          <q-item-section avatar>
+            <q-icon name="search" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Найти</q-item-label>
@@ -39,7 +48,7 @@
         </q-item>
         <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
           <q-item-section avatar>
-            <q-icon name="chat" />
+            <q-icon name="account_box" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Личный кабинет</q-item-label>
