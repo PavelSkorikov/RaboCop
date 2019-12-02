@@ -12,3 +12,21 @@ class QuestionCreateView(generics.CreateAPIView):
     # правило доступа, импортируется из rest_framework.permissions, определяет что
     # что тоько аутентифицированнный пользователь и администратор имеет доступ
     permission_classes = (IsAuthenticated, )
+# метод который возвращает список объектов из таблицы
+# он должен обязательно иметь параметр queryset в котором можно задавать условия выборки объектов
+class QuestionListView(generics.ListAPIView):
+    serializer_class = QuestionListSerializer
+    permission_classes = (IsAuthenticated, )
+    # выбираем запросы которые сделал текущий пользователь и сортируем по убыванию даты создания заказа
+    def get_queryset(self):
+        return Question.objects.filter(user=self.request.user).order_by('-createAt')
+# метод, который возвращает детальную информацию по одному запросу
+class QuestionDetailView(generics.RetrieveAPIView):
+    serializer_class = QuestionDetailSerializer
+    queryset = Question.objects.all()
+    permission_classes = (IsOwner, )
+# метод редактирования или удаления запроса
+class QuestionEditView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = QuestionDetailSerializer
+    queryset = Question.objects.all()
+    permission_classes = (IsOwner, )

@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <img alt="RaboCop" src="~assets/logo.jpg">
+    <img alt="RaboCop" src="~assets/logo.png">
   </q-page>
 </template>
 

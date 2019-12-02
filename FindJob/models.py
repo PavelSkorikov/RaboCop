@@ -32,16 +32,16 @@ class Question(models.Model):
     # создаем уникальный идентификатор для поля с использованием uuid
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # ключевые слова для запроса
-    keywords = models.CharField(max_length=128)
+    keywords = models.CharField(max_length=128, unique=True)
     # удаленная или нет
     remote = models.BooleanField()
     # регион размещения вакансии
-    location = models.CharField(max_length=128)
+    location = models.CharField(max_length=128, blank=True)
     # требуется опыт или нет
     skill = models.BooleanField()
     # тип занятости
     EMPLOYMENT = (
-        ('NO', 'none'),
+        ('NO', 'Не знаю'),
         ('FULL', 'Полная занятость'),
         ('PARTIAL', 'Частичная занятость'),
         ('TEMPORARY', 'Временная работа'),
@@ -50,12 +50,14 @@ class Question(models.Model):
     employment_type = models.CharField(max_length=9, choices=EMPLOYMENT, default='NO')
     # график работы
     SCHEDULE = (
-        ('NO', 'none'),
+        ('NO', 'Не знаю'),
         ('FULL', 'Полный день'),
         ('SHIFT', 'Сменный график'),
         ('FLEX', 'Гибкий график'),
         ('REMOTE', 'Вахтовый метод'),
     )
     schedule_work = models.CharField(max_length=9, choices=SCHEDULE, default='NO')
+    # дата создания записи в базе
+    createAt = models.DateField(auto_now_add=True)
     # связанная модель пользователя, выполняющего поиск
     user = models.ForeignKey(User, on_delete=models.CASCADE)

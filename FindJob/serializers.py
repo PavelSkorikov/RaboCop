@@ -14,7 +14,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
 class QuestionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ('keywords', 'location', 'remote', 'skill')
+        fields = ('keywords', 'location', 'remote', 'skill', 'createAt')
 
 class VacancyDetailSerializer(serializers.ModelSerializer):
     #user = serializers.HiddenField(default=serializers.CurrentUserDefault())

@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Поиск вакансий
+          Поиск работы
         </q-toolbar-title>
 
         <div style="margin-right: 20px">Регистрация</div>
@@ -37,22 +37,13 @@
             <q-item-label caption>форма быстрого поиска</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://github.quasar.dev">
-          <q-item-section avatar>
-            <q-icon name="code" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Настройки</q-item-label>
-            <q-item-label caption>параметры поиска и оповещения</q-item-label>
-          </q-item-section>
-        </q-item>
         <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
           <q-item-section avatar>
             <q-icon name="chat" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Discord Chat Channel</q-item-label>
-            <q-item-label caption>chat.quasar.dev</q-item-label>
+            <q-item-label>Личный кабинет</q-item-label>
+            <q-item-label caption>для зарегистрированных пользователей</q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
