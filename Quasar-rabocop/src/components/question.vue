@@ -45,7 +45,7 @@
         </div>
          <div class="q-pa-lg">
             <q-option-group
-            v-model="group"
+            v-model="skill"
             :options="options_skill"
             color="primary"
             inline
@@ -62,17 +62,18 @@
 
 <script>
 export default {
+  name: 'question',
   data () {
     return {
-      group: 'op1',
+      skill: true,
       options_skill: [
         {
           label: 'Есть опыт работы',
-          value: 'op1'
+          value: true
         },
         {
           label: 'Нет опыта',
-          value: 'op2'
+          value: false
         }
       ],
       employment: '',
@@ -125,11 +126,20 @@ export default {
       keywords: '',
       location: ''
     }
+  },
+  methods: {
+    send () {
+      this.$axios.post(this.appConfig.api_url + 'question/create/', {
+        keywords: this.keywords,
+        location: this.location,
+        remote: this.remote,
+        employment_type: this.employment,
+        shedule_work: this.shedule,
+        skill: this.skill })
+        .then((res) => {
+          console.log('Ответ сервера:', res)
+        })
+    }
   }
-  // mounted() {
-  //     this.$axios
-  //       .get(this.appConfig.admin_url + '/getCategory')
-  //       .then(response => (this.categories = response.data));
-  //   },
 }
 </script>
