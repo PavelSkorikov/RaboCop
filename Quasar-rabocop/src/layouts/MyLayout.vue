@@ -84,9 +84,15 @@
         </q-item>
       </q-list>
     </q-drawer>
-
     <q-page-container style="margin: 20px">
-      <router-view />
+      <q-page class="row">
+       <div class="col-xs-12 col-sm-10 col-md-8 row justify-center">
+        <router-view />
+       </div>
+       <div class="col-xs-12 col-sm-2 col-md-4">
+          <img alt="RaboCop" src="~assets/logo.png">
+        </div>
+    </q-page>
     </q-page-container>
   </q-layout>
 </template>

@@ -28,10 +28,9 @@
             <q-select
                 square
                 outlined
-                v-model="model"
+                v-model="employment"
                 :options="options_employment"
                 label="Тип занятости"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
             />
         </div>
         <br>
@@ -39,10 +38,9 @@
             <q-select
                 square
                 outlined
-                v-model="model"
+                v-model="schedule"
                 :options="options_schedule"
                 label="График работы"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
             />
         </div>
          <div class="q-pa-lg">
@@ -77,15 +75,61 @@ export default {
           value: 'op2'
         }
       ],
+      employment: '',
+      options_employment: [
+        {
+          label: 'Не знаю',
+          value: 'NO'
+        },
+        {
+          label: 'Полная занятость',
+          value: 'FULL'
+        },
+        {
+          label: 'Частичная занятость',
+          value: 'PARTIAL'
+        },
+        {
+          label: 'Временная работа',
+          value: 'TEMPORARY'
+        },
+        {
+          label: 'Стажировка',
+          val: 'INTERN'
+        }
+      ],
+      schedule: '',
+      options_schedule: [
+        {
+          label: 'Не знаю',
+          value: 'NO'
+        },
+        {
+          label: 'Полный день',
+          value: 'FULL'
+        },
+        {
+          label: 'Сменный график',
+          value: 'SHIFT'
+        },
+        {
+          label: 'Гибкий график',
+          value: 'FLEX'
+        },
+        {
+          label: 'Вахтовый метод',
+          val: 'REMOTE'
+        }
+      ],
       remote: false,
       keywords: '',
       location: ''
     }
-  },
-  mounted() {
-      this.$axios
-        .get(this.appConfig.admin_url + '/getCategory')
-        .then(response => (this.categories = response.data));
-    },
+  }
+  // mounted() {
+  //     this.$axios
+  //       .get(this.appConfig.admin_url + '/getCategory')
+  //       .then(response => (this.categories = response.data));
+  //   },
 }
 </script>
