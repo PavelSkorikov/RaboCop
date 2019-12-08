@@ -26,13 +26,16 @@ class Vacancy(models.Model):
     createAt = models.DateField(auto_now_add=True)
     # связанная модель пользователя, выполняющего поиск
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # для удобочитаемого отображения объекта в админке
+    def __str__(self):
+        return self.title
 
 # Модель поискового запроса
 class Question(models.Model):
     # создаем уникальный идентификатор для поля с использованием uuid
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # ключевые слова для запроса
-    keywords = models.CharField(max_length=128, unique=True)
+    keywords = models.CharField(max_length=128)
     # удаленная или нет
     remote = models.BooleanField()
     # регион размещения вакансии
@@ -60,4 +63,7 @@ class Question(models.Model):
     # дата создания записи в базе
     createAt = models.DateField(auto_now_add=True)
     # связанная модель пользователя, выполняющего поиск
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='1')
+    # для удобочитаемого отображения объекта в админке
+    def __str__(self):
+        return self.keywords

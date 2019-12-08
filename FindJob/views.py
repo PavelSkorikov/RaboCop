@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.views import APIView, Response
 from FindJob.serializers import *
 from FindJob.models import *
 from FindJob.permissions import *

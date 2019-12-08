@@ -24,7 +24,10 @@ urlpatterns = [
     path ('api/v1/auth/', include('djoser.urls')),
     # подключаем аутентификацию помощью бибилиотеки Djoser (токены)
     # токены будут выдаваться пользователю по адресу http://localhost:8000/api/v1/auth_token/token/login
-    path ('api/v1/auth_token/', include('djoser.urls.authtoken')),
+    path ('api/v1/auth/', include('djoser.urls.authtoken')),
+    # # jwt-токены авторизация
+    # path ('api/v1/auth/', include('djoser.urls.jwt')),
+
     # путь к приложению FindJob
     path('api/v1/findjob/', include('FindJob.urls')),
 ]

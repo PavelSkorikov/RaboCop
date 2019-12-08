@@ -8,7 +8,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
     #user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = ('keywords', 'location', 'remote', 'skill', 'employment_type', 'schedule_work')
 
 # сериализатор для определенных полей таблицы Category
 class QuestionListSerializer(serializers.ModelSerializer):

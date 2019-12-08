@@ -28,7 +28,7 @@
             <q-select
                 square
                 outlined
-                v-model="employment"
+                v-model="employment_type"
                 :options="options_employment"
                 label="Тип занятости"
             />
@@ -38,7 +38,7 @@
             <q-select
                 square
                 outlined
-                v-model="schedule"
+                v-model="schedule_work"
                 :options="options_schedule"
                 label="График работы"
             />
@@ -61,10 +61,16 @@
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   name: 'question',
   data () {
     return {
+      employment_type: '',
+      schedule_work: '',
+      remote: false,
+      keywords: '',
+      location: '',
       skill: true,
       options_skill: [
         {
@@ -76,7 +82,6 @@ export default {
           value: false
         }
       ],
-      employment: '',
       options_employment: [
         {
           label: 'Не знаю',
@@ -96,10 +101,9 @@ export default {
         },
         {
           label: 'Стажировка',
-          val: 'INTERN'
+          value: 'INTERN'
         }
       ],
-      schedule: '',
       options_schedule: [
         {
           label: 'Не знаю',
@@ -119,26 +123,24 @@ export default {
         },
         {
           label: 'Вахтовый метод',
-          val: 'REMOTE'
+          value: 'REMOTE'
         }
-      ],
-      remote: false,
-      keywords: '',
-      location: ''
+      ]
     }
   },
   methods: {
     send () {
-      this.$axios.post(this.appConfig.api_url + 'question/create/', {
+      let postdata = {
         keywords: this.keywords,
-        location: this.location,
         remote: this.remote,
-        employment_type: this.employment,
-        shedule_work: this.shedule,
-        skill: this.skill })
-        .then((res) => {
-          console.log('Ответ сервера:', res)
-        })
+        location: this.location,
+        skill: this.skill,
+        employment: this.employment_type.value,
+        schedule_work: this.schedule_work.value
+      }
+      this.$axios.post(this.appConfig.api_url + 'question/create/', qs.stringify(postdata)).then((res) => {
+        console.log('Ответ сервера:', res)
+      })
     }
   }
 }

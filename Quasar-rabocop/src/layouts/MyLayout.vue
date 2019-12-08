@@ -86,7 +86,7 @@
     </q-drawer>
     <q-page-container style="margin: 20px">
       <q-page class="row">
-       <div class="col-xs-12 col-sm-10 col-md-8 row justify-center">
+       <div class="col-xs-8 col-sm-10 col-md-8 row justify-center">
         <router-view />
        </div>
        <div class="col-xs-12 col-sm-2 col-md-4">
