@@ -15,8 +15,8 @@
           Поиск работы
         </q-toolbar-title>
 
-        <div style="margin-right: 20px; font-size:16px">Регистрация</div>
-        <div style="font-size:16px">Вход</div>
+        <q-btn flat size='md' color='white' label='Регистрация' to="/register" />
+        <q-btn flat color='white' label='Вход' to="/login" />
       </q-toolbar>
     </q-header>
 

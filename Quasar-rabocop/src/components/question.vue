@@ -9,7 +9,7 @@
                 v-model="keywords"
                 label="Ключевые слова"
                 :rules="[ val => val && val.length > 0 || 'Please type something',
-                        val => val.length <= 128 || 'Please use maximum 3 characters'
+                        val => val.length <= 128 || 'Please use maximum 128 characters'
                         ]"
             />
         </div>
@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 export default {
   name: 'question',
   data () {
@@ -138,7 +137,7 @@ export default {
         employment: this.employment_type.value,
         schedule_work: this.schedule_work.value
       }
-      this.$axios.post(this.appConfig.api_url + 'question/create/', qs.stringify(postdata)).then((res) => {
+      this.$axios.post(this.appConfig.api_url + 'question/create/', this.$qs.stringify(postdata)).then((res) => {
         console.log('Ответ сервера:', res)
       })
     }

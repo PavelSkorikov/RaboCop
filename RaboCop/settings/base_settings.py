@@ -26,7 +26,7 @@ DATABASES = {
      }
  }
 
-# считываем имя хоста 'LOCAL_HOST' из .env
+# считываем имена разрешенных хостов 'LOCAL_HOST' из .env
 ALLOWED_HOSTS = [os.getenv('LOCAL_HOST')]
 
 # считываем секр. ключ 'SECRET_KEY' из .env

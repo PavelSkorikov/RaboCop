@@ -4,7 +4,7 @@ REST_FRAMEWORK = {
       'rest_framework.permissions.IsAuthenticated',
       'rest_framework.permissions.AllowAny',
     ),
-    # это размер пагинатора
+    # это размер пагинатора (количество элементов на 1 странице)
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
