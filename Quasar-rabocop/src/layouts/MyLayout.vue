@@ -15,8 +15,8 @@
           Поиск работы
         </q-toolbar-title>
 
-        <q-btn flat size='md' color='white' label='Регистрация' to="/register" />
-        <q-btn flat color='white' label='Вход' to="/login" />
+        <q-btn v-if="isAuth" flat size='md' color='white' label='Регистрация' to="/register" />
+        <q-btn v-if="isAuth" flat color='white' label='Вход' to="/login" />
       </q-toolbar>
     </q-header>
 
@@ -86,11 +86,11 @@
     </q-drawer>
     <q-page-container style="margin: 20px">
       <q-page class="row">
-       <div class="col-xs-12 col-sm-10 col-md-8 row justify-center">
+       <div class="col-xs-12 col-sm-8 col-md-8 row justify-center">
         <router-view />
        </div>
-       <div class="col-xs-12 col-sm-2 col-md-4">
-          <img alt="RaboCop" src="~assets/logo.png">
+       <div class="col-xs-12 col-sm-10 col-md-4">
+          <img alt="RaboCop" src="~assets/logo.png" style="width: 300px">
         </div>
     </q-page>
     </q-page-container>
@@ -103,7 +103,9 @@ export default {
 
   data () {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      username: localStorage.user,
+      isAuth: !localStorage.user
     }
   }
 }

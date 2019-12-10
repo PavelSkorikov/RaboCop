@@ -1,7 +1,7 @@
 <template>
     <!-- форма ввода данных для поискового запроса -->
-    <div class="q-pa-md" style="width: 450px">
-        <h4>Данные для поиска</h4>
+    <div class="q-pa-md" style="width: 350px">
+        <div class="q-pa-md" style="font-size: 24px; color: dodgerblue">Форма поиска:</div>
         <div class="q-gutter-md">
             <q-input
                 square
@@ -55,7 +55,7 @@
             <q-checkbox left-label v-model="remote" label="Хочу работать удаленно" />
         </div>
         <div class="flex flex-center" style="margin-top: 40px">
-            <q-btn @click="send" color="primary" label="Отправить" style="width: 450px; height: 40px" />
+            <q-btn @click="send" color="primary" label="Отправить" style="width: 350px; height: 40px" />
         </div>
     </div>
 </template>
