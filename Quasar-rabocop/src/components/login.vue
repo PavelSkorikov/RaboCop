@@ -45,7 +45,7 @@
 
 <script>
 export default {
-  name: 'register',
+  name: 'login',
   data () {
     return {
       user_data: {
@@ -62,7 +62,6 @@ export default {
     send () {
       this.$axios.post(this.appConfig.auth_url + '/token/login/', this.$qs.stringify(this.user_data))
         .then((response) => {
-          console.log(response.data)
           localStorage.token = response.data.auth_token
           localStorage.user = this.user_data.username
           this.$axios.defaults.headers.common = {
@@ -72,11 +71,8 @@ export default {
           document.location.href = this.appConfig.main_page
         })
         .catch((error) => {
-          if (error.response.data.username) {
-            this.err_message = error.response.data.username[0]
-          }
-          if (error.response.data.password) {
-            this.err_message = error.response.data.password[0]
+          if (error.response.data.non_field_errors) {
+            this.err_message = error.response.data.non_field_errors[0]
           }
           this.$q.notify({
             color: 'red-5',

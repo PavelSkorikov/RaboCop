@@ -66,21 +66,33 @@ export default {
         email: '',
         password: ''
       },
-      auth_user: {},
       isPwd: true,
       err_message: ''
     }
   },
   methods: {
-    // метод отправки формы на сервер
+    // метод регистрации нового пользователя
     send () {
       this.$axios.post(this.appConfig.auth_url + '/users/', this.$qs.stringify(this.user_data))
         .then((response) => {
-          console.log(response.data)
-          this.auth_user = response.data
-          this.user_data = {}
-          this.$router.push('/')
+          this.user_data.username = response.data.username
+          // после успешной регистрации проводим процедуру авторизации нового пользователя
+          this.$axios.post(this.appConfig.auth_url + '/token/login/', this.$qs.stringify(this.user_data))
+            .then((response) => {
+              // сохраняем токен и имя пользователя
+              localStorage.token = response.data.auth_token
+              localStorage.user = this.user_data.username
+              // устанавливаем токен в заголовок авторизации
+              this.$axios.defaults.headers.common = {
+                'Authorization': 'Token ' + localStorage.token
+              }
+              // очищаем данные формы
+              this.user_data = {}
+              // перенаправляем авторизованного пользователя на главную страницу
+              document.location.href = this.appConfig.main_page
+            })
         })
+        // в случае ошибки выводим ее описание во всплывающем окне
         .catch((error) => {
           if (error.response.data.username) {
             this.err_message = error.response.data.username[0]

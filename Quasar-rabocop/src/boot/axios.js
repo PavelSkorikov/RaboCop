@@ -3,6 +3,14 @@ import axios from 'axios'
 import qs from 'qs'
 const config = require('../config')
 
+// устанавливаем токен в заголовок авторизации для всех исходящих запросов
+const token = localStorage.getItem('token')
+if (token) {
+  axios.defaults.headers.common = {
+    'Authorization': 'Token ' + token
+  }
+}
+
 // экспортируем алиас $axios для доступа из любого компонента
 Vue.prototype.$axios = axios.create({ headers: {
   'Content-Type': 'application/x-www-form-urlencoded',

@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <!--    верхняя панель-->
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -10,13 +11,25 @@
           icon="menu"
           aria-label="Menu"
         />
-
         <q-toolbar-title>
           Поиск работы
         </q-toolbar-title>
-
-        <q-btn v-if="isAuth" flat size='md' color='white' label='Регистрация' to="/register" />
-        <q-btn v-if="isAuth" flat color='white' label='Вход' to="/login" />
+<!--    кнопки регистрации и авторизации-->
+        <q-btn v-if="noAuth" flat size='md' color='white' label='Регистрация' to="/register" />
+        <q-btn v-if="noAuth" flat color='white' label='Вход' to="/login" />
+<!--        меню авторизованного пользователя-->
+         <q-btn v-if="isAuth" color="primary" :label="username">
+        <q-menu>
+          <q-list style="min-width: 100px">
+            <q-item clickable v-close-popup>
+              <q-item-section>Личный кабинет</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="logout">
+              <q-item-section>Выход</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -105,7 +118,19 @@ export default {
     return {
       leftDrawerOpen: false,
       username: localStorage.user,
-      isAuth: !localStorage.user
+      noAuth: !localStorage.user,
+      isAuth: localStorage.user
+    }
+  },
+  methods: {
+    // метод логаута пользователя
+    logout () {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      // удаляем токен из заголовка авторизации
+      delete this.$axios.defaults.headers.common['Authorization']
+      //  переходим на главную страницу
+      document.location.href = this.appConfig.main_page
     }
   }
 }
