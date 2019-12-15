@@ -12,7 +12,7 @@
           aria-label="Menu"
         />
         <q-toolbar-title>
-          Поиск работы
+          Поиск удаленной работы
         </q-toolbar-title>
 <!--    кнопки регистрации и авторизации-->
         <q-btn v-if="noAuth" flat size='md' color='white' label='Регистрация' to="/register" />
@@ -21,7 +21,7 @@
          <q-btn v-if="isAuth" color="primary" :label="username">
         <q-menu>
           <q-list style="min-width: 100px">
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup to="/desktop">
               <q-item-section>Личный кабинет</q-item-section>
             </q-item>
             <q-item clickable v-close-popup @click="logout">
@@ -59,7 +59,7 @@
             <q-item-label caption>форма быстрого поиска</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
+        <q-item clickable v-ripple to="/desktop">
           <q-item-section avatar>
             <q-icon name="account_box" />
           </q-item-section>

@@ -13,16 +13,6 @@
                         ]"
             />
         </div>
-        <br>
-        <div class="q-gutter-md">
-             <q-input
-                square
-                outlined
-                v-model="location"
-                label="Желаемое расположение"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
-             />
-        </div>
          <br>
         <div class="q-gutter-md">
             <q-select
@@ -51,9 +41,6 @@
             inline
             />
         </div>
-        <div class="q-gutter-sm">
-            <q-checkbox left-label v-model="remote" label="Хочу работать удаленно" />
-        </div>
         <div class="flex flex-center" style="margin-top: 40px">
             <q-btn @click="send" color="primary" label="Отправить" style="width: 350px; height: 40px" />
         </div>
@@ -67,9 +54,7 @@ export default {
     return {
       employment_type: '',
       schedule_work: '',
-      remote: false,
       keywords: '',
-      location: '',
       skill: true,
       options_skill: [
         {

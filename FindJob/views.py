@@ -6,6 +6,12 @@ from FindJob.models import *
 from FindJob.permissions import *
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+
+from FindJob.helpers.hh import *
+
 # Create your views here.
 # метод который создает объект в базе данных
 class QuestionCreateView(generics.CreateAPIView):
@@ -29,3 +35,9 @@ class QuestionEditView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = QuestionDetailSerializer
     queryset = Question.objects.all()
     permission_classes = (IsOwner, )
+
+@csrf_exempt
+def vacancy_return(request):
+    if request.method == 'GET':
+        data = get_vacancy('https://hh.ru/search/vacancy?st=searchVacancy&text=Node.js&experience=doesNotMatter&employment=full&schedule=remote&items_on_page=100')
+        return JsonResponse(data, safe=False)

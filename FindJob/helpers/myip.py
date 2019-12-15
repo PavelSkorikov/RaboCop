@@ -16,7 +16,7 @@ def get_sslproxy():
     return proxies
 
 def get_html(url):
-    with open('useragents.txt') as f:
+    with open('FindJob/helpers/useragents.txt') as f:
         useragents = f.read().split('\n')
     proxies = get_sslproxy()
     proxy = {'http': 'http://'+choice(proxies)}

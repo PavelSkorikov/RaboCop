@@ -36,10 +36,6 @@ class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # ключевые слова для запроса
     keywords = models.CharField(max_length=128)
-    # удаленная или нет
-    remote = models.BooleanField()
-    # регион размещения вакансии
-    location = models.CharField(max_length=128, blank=True)
     # требуется опыт или нет
     skill = models.BooleanField()
     # тип занятости
