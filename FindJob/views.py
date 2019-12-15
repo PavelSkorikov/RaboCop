@@ -39,5 +39,10 @@ class QuestionEditView(generics.RetrieveUpdateDestroyAPIView):
 @csrf_exempt
 def vacancy_return(request):
     if request.method == 'GET':
-        data = get_vacancy('https://hh.ru/search/vacancy?st=searchVacancy&text=Node.js&experience=doesNotMatter&employment=full&schedule=remote&items_on_page=100')
-        return JsonResponse(data, safe=False)
+        query_params = {}
+        query_params['keywords'] = request.GET.get('keywords', '')
+        query_params['experience'] = request.GET.get('skill', '')
+        query_params['employment'] = request.GET.get('employment', '')
+        query_params['schedule'] = request.GET.get('schedule_work', '')
+
+        return JsonResponse(get_vacancy(query_params), safe=False)

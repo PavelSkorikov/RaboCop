@@ -45,7 +45,8 @@ def write_json_file(parse_data):
 # главная функция, которая по заданному запросу  - url
 # повторяет все методы 5 раз, таким образом предполагая что количество
 # вакансий не больше 500
-def get_vacancy(url):
+def get_vacancy(params):
+    url = 'https://hh.ru/search/vacancy?st=searchVacancy&text='+params['keywords']+'&experience='+params['experience']+'&employment='+params['employment']+'&schedule=remote&schedule='+params['schedule']+'&items_on_page=100'
     result = []
     i = 0
     threads = []
