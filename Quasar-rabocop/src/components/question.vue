@@ -46,18 +46,15 @@
             <q-btn @click="send" color="primary" label="Отправить" style="width: 350px; height: 40px" />
         </div>
       <br><br><br><br>
-       <div class="q-pa-md" style="width: 1150px">
+       <div class="q-pa-md" style="width: 1200px">
         <q-table
           title="hh.ru"
+          dense
           :data="data"
           :columns="columns"
           row-key="name"
-          selection="single"
-          :selected.sync="selected"
+          @row-click = 'link'
         />
-        <div class="q-mt-md">
-          Selected: {{ JSON.stringify(selected) }}
-        </div>
        </div>
     </div>
 </template>
@@ -133,13 +130,34 @@ export default {
           label: 'Описание',
           align: 'left',
           field: row => row.name,
-          format: val => `${val}`,
-          sortable: true
+          sortable: true,
+          style: 'max-width: 400px',
+          headerClasses: 'bg-info'
         },
-        { name: 'company', align: 'left', label: 'Компания', field: 'company', sortable: true },
-        { name: 'city', align: 'left', label: 'Город', field: 'city', sortable: true },
-        { name: 'date', align: 'left', label: 'Дата размещения', field: 'date', sortable: true },
-        { name: 'href', align: 'left', label: 'Ссылка', field: 'href' }
+        { name: 'company',
+          align: 'left',
+          label: 'Компания',
+          field: 'company',
+          sortable: true,
+          style: 'max-width: 400px',
+          headerClasses: 'bg-info'
+        },
+        { name: 'city',
+          align: 'left',
+          label: 'Город',
+          field: 'city',
+          sortable: true,
+          style: 'max-width: 200px',
+          headerClasses: 'bg-info'
+        },
+        { name: 'date',
+          align: 'left',
+          label: 'Дата размещения',
+          field: 'date',
+          sortable: true,
+          style: 'max-width: 100px',
+          headerClasses: 'bg-info'
+        }
       ],
       data: []
     }
@@ -159,6 +177,9 @@ export default {
           console.log('Ответ сервера:', res)
           this.data = res.data
         })
+    },
+    link (evt, row) {
+      window.open(row.href)
     }
   }
 }
