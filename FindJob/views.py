@@ -43,6 +43,5 @@ def vacancy_return(request):
         query_params['keywords'] = request.GET.get('keywords', '')
         query_params['experience'] = request.GET.get('skill', '')
         query_params['employment'] = request.GET.get('employment', '')
-        query_params['schedule'] = request.GET.get('schedule_work', '')
 
         return JsonResponse(get_vacancy(query_params), safe=False)

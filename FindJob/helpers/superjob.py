@@ -1,29 +1,30 @@
 from bs4 import BeautifulSoup
+import re
 import json
 from threading import Thread
 from FindJob.helpers.myip import get_html
 
-# фунуция парсинга hh.ru возвращает список с вакансиями
+# фунуция парсинга superjob.ru возвращает список с вакансиями
 def get_data(url, data):
     r = get_html(url)
     if r:
         soup = BeautifulSoup(r, 'lxml')
         try:
-            vacancy_link = soup.find_all('a', class_='bloko-link HH-LinkModifier')
-            company_name = soup.find('div', class_='vacancy-serp').find_all('a', class_='bloko-link bloko-link_secondary HH-AnonymousIndexAnalytics-Recommended-Company')
-            city_name = soup.find('div', class_='vacancy-serp').find_all('span', class_='vacancy-serp-item__meta-info')
-            public_date = soup.find('div', class_='vacancy-serp').find_all('span', class_='vacancy-serp-item__publication-date')
+            vacancy_title = soup.find_all('div', class_='_3mfro CuJz5 PlM3e _2JVkc _3LJqf')
+            vacancy_link = soup.find_all('a', class_=re.compile("icMQ_ _1QIBo"))
+            company_name = soup.find_all('a', class_=re.compile("icMQ_ _205Zx"))
+            vacancy_date = soup.find_all('span', class_='_3mfro _9fXTd _2JVkc _3e53o _3Ll36')
         except:
             return
-        for i in range(len(vacancy_link)):
+        for i in range(len(vacancy_title)):
             vacancy = {}
-            vacancy['name'] = vacancy_link[i].text.strip()
+            vacancy['name'] = vacancy_title[i].text.strip()
             vacancy['href'] = vacancy_link[i].get('href')
             vacancy['company'] = company_name[i].text.strip()
-            vacancy['city'] = city_name[i].text.strip()
-            dl = public_date[i].text.strip().split('\xa0')
-            vacancy['date'] = dl[0] + ' ' + dl[1]
+            vacancy['city'] = vacancy_date[i].next_sibling.next_sibling.text.strip()
+            vacancy['date'] = vacancy_date[i].text.strip()
             data.append(vacancy)
+        print(data)
 
 # функция записи данных в файл в формате JSON
 def write_json_file(parse_data):
@@ -46,7 +47,7 @@ def write_json_file(parse_data):
 # повторяет все методы 5 раз, таким образом предполагая что количество
 # вакансий не больше 500
 def get_vacancy(params):
-    url = 'https://hh.ru/search/vacancy?st=searchVacancy&text='+params['keywords']+'&experience='+params['experience']+'&employment='+params['employment']+'&schedule=remote&items_on_page=100'
+    url = 'https://www.superjob.ru/vacancy/search/?keywords=python&remote_work=1&geo%5Bc%5D%5B0%5D=1'
     result = []
     i = 0
     threads = []
@@ -62,6 +63,6 @@ def get_vacancy(params):
     return result
 
 if __name__ == '__main__':
-    url = 'https://hh.ru/search/vacancy?st=searchVacancy&text=Node.js&experience=doesNotMatter&employment=full&schedule=remote&items_on_page=100'
-    print(get_vacancy(url))
+    url = 'https://www.superjob.ru/vacancy/search/?keywords=python&remote_work=1&geo%5Bc%5D%5B0%5D=1'
+    get_data(url, [])
 
