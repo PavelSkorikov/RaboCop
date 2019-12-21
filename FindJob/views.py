@@ -10,7 +10,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
-from FindJob.helpers.hh import *
+from FindJob.helpers.hh import getVacancy_hh
+from FindJob.helpers.superjob import getVacancy_sj
 
 # Create your views here.
 # метод который создает объект в базе данных
@@ -39,9 +40,11 @@ class QuestionEditView(generics.RetrieveUpdateDestroyAPIView):
 @csrf_exempt
 def vacancy_return(request):
     if request.method == 'GET':
+        # вытаскиваем из запроса параметры поиска вакансии
         query_params = {}
         query_params['keywords'] = request.GET.get('keywords', '')
         query_params['experience'] = request.GET.get('skill', '')
         query_params['employment'] = request.GET.get('employment', '')
 
-        return JsonResponse(get_vacancy(query_params), safe=False)
+        data = getVacancy_hh(query_params) + getVacancy_sj(query_params)
+        return JsonResponse(data, safe=False)

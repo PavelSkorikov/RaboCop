@@ -4,7 +4,7 @@ from threading import Thread
 from FindJob.helpers.myip import get_html
 
 # фунуция парсинга hh.ru возвращает список с вакансиями
-def get_data(url, data):
+def getData_hh(url, data):
     r = get_html(url)
     if r:
         soup = BeautifulSoup(r, 'lxml')
@@ -23,6 +23,7 @@ def get_data(url, data):
             vacancy['city'] = city_name[i].text.strip()
             dl = public_date[i].text.strip().split('\xa0')
             vacancy['date'] = dl[0] + ' ' + dl[1]
+            vacancy['source'] = 'hh.ru'
             data.append(vacancy)
 
 # функция записи данных в файл в формате JSON
@@ -45,14 +46,14 @@ def write_json_file(parse_data):
 # главная функция, которая по заданному запросу  - url
 # повторяет все методы 5 раз, таким образом предполагая что количество
 # вакансий не больше 500
-def get_vacancy(params):
-    url = 'https://hh.ru/search/vacancy?st=searchVacancy&text='+params['keywords']+'&experience='+params['experience']+'&employment='+params['employment']+'&schedule=remote&items_on_page=100'
+def getVacancy_hh(params):
+    url = 'https://hh.ru/search/vacancy?st=searchVacancy?order_by=publication_time&text='+params['keywords']+'&experience='+params['experience']+'&employment='+params['employment']+'&schedule=remote&items_on_page=100'
     result = []
     i = 0
     threads = []
     # используем треды для многопоточности
     while i < 5:
-        thread = Thread(target=get_data, args=(url, result))
+        thread = Thread(target=getData_hh, args=(url, result))
         threads.append(thread)
         thread.start()
         i += 1
@@ -63,5 +64,5 @@ def get_vacancy(params):
 
 if __name__ == '__main__':
     url = 'https://hh.ru/search/vacancy?st=searchVacancy&text=Node.js&experience=doesNotMatter&employment=full&schedule=remote&items_on_page=100'
-    print(get_vacancy(url))
+    print(getVacancy_hh(url))
 

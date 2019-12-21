@@ -1,10 +1,14 @@
 <template>
     <!-- форма ввода данных для поискового запроса -->
+  <div>
     <div class="q-pa-md" style="width: 800px">
-        <div class="q-pa-md" style="font-size: 24px; color: dodgerblue">Задайте параметры поиска:</div>
+        <div class="q-pa-md" style="font-size: 24px; color: dodgerblue">
+          Задайте параметры поиска:
+        </div>
         <div class="q-gutter-md">
             <q-input
                 style = 'width: 720px'
+                dense
                 square
                 outlined
                 v-model="keywords"
@@ -14,10 +18,10 @@
                         ]"
             />
         </div>
-         <br>
         <div class="q-gutter-md">
             <q-select
                 style = 'width: 350px; display: inline-block'
+                dense
                 square
                 outlined
                 v-model="employment_type"
@@ -26,6 +30,7 @@
             />
             <q-select
                 style = 'width: 350px; display: inline-block'
+                dense
                 square
                 outlined
                 v-model="skill"
@@ -33,30 +38,27 @@
                 label="Опыт работы"
             />
         </div>
-        <br>
         <div class="flex flex-center" style="margin-top: 40px">
             <q-btn @click="send" color="primary" label="Найти" style="width: 350px; height: 40px" />
         </div>
-      <br><br><br><br>
-       <div class="q-pa-md" style="width: 1200px">
-        <q-table
-          title="hh.ru"
-          dense
-          :data="data"
-          :columns="columns"
-          row-key="name"
-          @row-click = 'link'
-        />
-         <q-table
-          title="hh.ru"
-          dense
-          :data="data"
-          :columns="columns"
-          row-key="name"
-          @row-click = 'link'
-        />
-       </div>
     </div>
+    <br>
+    <div class="q-pa-md">
+      <q-table
+        class="my-sticky-virtscroll-table"
+        :dense="$q.screen.lt.md"
+        title="Результат"
+        table-style="max-height: 1200px"
+        :data="data"
+        :columns="columns"
+        @row-click = 'link'
+        :pagination.sync="pagination"
+        :rows-per-page-options="[10]"
+         :virtual-scroll-sticky-start="10"
+        row-key="index"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -102,40 +104,54 @@ export default {
       selected: [],
       columns: [
         {
+          name: 'index',
+          label: '#',
+          field: 'index',
+          sortable: true,
+          style: 'max-width: 3px'
+        },
+        {
           name: 'name',
           required: true,
-          label: 'Описание',
+          label: 'Вакансия',
           align: 'left',
           field: row => row.name,
           sortable: true,
-          style: 'max-width: 400px',
-          headerClasses: 'bg-info'
+          classes: 'bg-grey-2 ellipsis',
+          style: 'max-width: 300px'
         },
         { name: 'company',
           align: 'left',
           label: 'Компания',
           field: 'company',
           sortable: true,
-          style: 'max-width: 400px',
-          headerClasses: 'bg-info'
+          classes: 'ellipsis',
+          style: 'max-width: 200px'
         },
         { name: 'city',
           align: 'left',
           label: 'Город',
           field: 'city',
           sortable: true,
-          style: 'max-width: 200px',
-          headerClasses: 'bg-info'
+          style: 'max-width: 200px'
         },
         { name: 'date',
           align: 'left',
           label: 'Дата размещения',
           field: 'date',
+          style: 'max-width: 50px'
+        },
+        { name: 'source',
+          align: 'left',
+          label: 'Источник',
+          field: 'source',
           sortable: true,
-          style: 'max-width: 100px',
-          headerClasses: 'bg-info'
+          style: 'max-width: 100px'
         }
       ],
+      pagination: {
+        rowsPerPage: 0
+      },
       data: []
     }
   },
@@ -152,6 +168,9 @@ export default {
         .then((res) => {
           console.log('Ответ сервера:', res)
           this.data = res.data
+          this.data.forEach((row, index) => {
+            row.index = index
+          })
         })
     },
     link (evt, row) {
@@ -160,3 +179,24 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+  .my-sticky-virtscroll-table
+  /* max height is important */
+  .q-table__middle
+    max-height: 1200px
+
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th /* bg color is important for th; just specify one */
+    background-color: #fff
+
+  thead tr:first-child th
+    position: sticky
+    font-size: 14px
+    color: white
+    background-color: #027BE3
+    top: 0
+    opacity: 1
+    z-index: 1
+</style>

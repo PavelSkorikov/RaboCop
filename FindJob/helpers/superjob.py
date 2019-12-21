@@ -5,7 +5,7 @@ from threading import Thread
 from FindJob.helpers.myip import get_html
 
 # фунуция парсинга superjob.ru возвращает список с вакансиями
-def get_data(url, data):
+def getData_sj(url, data):
     r = get_html(url)
     if r:
         soup = BeautifulSoup(r, 'lxml')
@@ -23,37 +23,29 @@ def get_data(url, data):
             vacancy['company'] = company_name[i].text.strip()
             vacancy['city'] = vacancy_date[i].next_sibling.next_sibling.text.strip()
             vacancy['date'] = vacancy_date[i].text.strip()
+            vacancy['source'] = 'SuperJob.ru'
             data.append(vacancy)
         print(data)
 
-# функция записи данных в файл в формате JSON
-def write_json_file(parse_data):
-    try:
-        data = json.load(open('vacancy.json'))
-        data_result = []
-        for i in parse_data:
-            for j in data:
-                if i not in j:
-                    data_result.append(i)
-        if len(data_result) != 0:
-            data.append(data_result)
-    except:
-        data = []
-        data.append(parse_data)
-    with open('vacancy.json', 'w') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
-# главная функция, которая по заданному запросу  - url
+# главная функция, принимает на вход параметры запроса, формирует url,
 # повторяет все методы 5 раз, таким образом предполагая что количество
 # вакансий не больше 500
-def get_vacancy(params):
-    url = 'https://www.superjob.ru/vacancy/search/?keywords=python&remote_work=1&geo%5Bc%5D%5B0%5D=1'
+def getVacancy_sj(params):
+    # изменим параметр в соответствии с требованием данного сайта
+    if params['employment'] == 'full':
+        params['employment'] = '6'
+    else:
+        if params['employment'] == 'part':
+            params['employment'] = '10'
+        else:
+            params['employment'] = ''
+    url = 'https://www.superjob.ru/vacancy/search/?keywords='+params['keywords']+'&remote_work=1'+'&work_type%5B0%5D='+params['employment']
     result = []
-    i = 0
+    i = 1
     threads = []
     # используем треды для многопоточности
-    while i < 5:
-        thread = Thread(target=get_data, args=(url, result))
+    while i < 3:
+        thread = Thread(target=getData_sj, args=(url, result))
         threads.append(thread)
         thread.start()
         i += 1
@@ -63,6 +55,7 @@ def get_vacancy(params):
     return result
 
 if __name__ == '__main__':
+    # код для проверки работы модуля
     url = 'https://www.superjob.ru/vacancy/search/?keywords=python&remote_work=1&geo%5Bc%5D%5B0%5D=1'
-    get_data(url, [])
+    getData_sj(url, [])
 

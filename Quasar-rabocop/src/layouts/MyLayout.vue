@@ -3,6 +3,7 @@
     <!--    верхняя панель-->
     <q-header elevated>
       <q-toolbar>
+        <img alt="RaboCop" src="~assets/logo-white.png" style="width: 30px">
         <q-btn
           flat
           dense
@@ -97,14 +98,11 @@
         </q-item>
       </q-list>
     </q-drawer>
-    <q-page-container style="margin: 20px">
+    <q-page-container style="margin: 10px">
       <q-page class="row">
-       <div class="col-xs-12 col-sm-8 col-md-8 row justify-center">
-        <router-view />
-       </div>
-       <div class="col-xs-12 col-sm-10 col-md-4">
-          <img alt="RaboCop" src="~assets/logo.png" style="width: 300px">
-        </div>
+        <div class="col-2"></div>
+        <router-view class="col-8"/>
+        <div class="col-2"></div>
     </q-page>
     </q-page-container>
   </q-layout>

@@ -1,4 +1,4 @@
-import requests, os
+import requests
 from bs4 import BeautifulSoup
 from random import choice
 def get_sslproxy():
@@ -14,8 +14,7 @@ def get_sslproxy():
     return proxies
 
 def get_html(url):
-    path = os.getcwd() + '/useragents.txt'
-    with open(path) as f:
+    with open('./FindJob/helpers/useragents.txt') as f:
         useragents = f.read().split('\n')
     proxies = get_sslproxy()
     proxy = {'http': 'http://'+choice(proxies)}
