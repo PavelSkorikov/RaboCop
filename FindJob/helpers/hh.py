@@ -13,6 +13,7 @@ def getData_hh(url, data):
             company_name = soup.find('div', class_='vacancy-serp').find_all('a', class_='bloko-link bloko-link_secondary HH-AnonymousIndexAnalytics-Recommended-Company')
             city_name = soup.find('div', class_='vacancy-serp').find_all('span', class_='vacancy-serp-item__meta-info')
             public_date = soup.find('div', class_='vacancy-serp').find_all('span', class_='vacancy-serp-item__publication-date')
+            compensation = soup.find('div', class_='vacancy-serp').find_all('div', class_='vacancy-serp-item__compensation')
         except:
             return
         for i in range(len(vacancy_link)):
@@ -21,6 +22,7 @@ def getData_hh(url, data):
             vacancy['href'] = vacancy_link[i].get('href')
             vacancy['company'] = company_name[i].text.strip()
             vacancy['city'] = city_name[i].text.strip()
+            vacancy['compensation'] = compensation[i].text.strip()
             dl = public_date[i].text.strip().split('\xa0')
             vacancy['date'] = dl[0] + ' ' + dl[1]
             vacancy['source'] = 'hh.ru'
@@ -46,21 +48,20 @@ def write_json_file(parse_data):
 # главная функция, которая по заданному запросу  - url
 # повторяет все методы 5 раз, таким образом предполагая что количество
 # вакансий не больше 500
-def getVacancy_hh(params):
+def getVacancy_hh(params, data):
     url = 'https://hh.ru/search/vacancy?st=searchVacancy?order_by=publication_time&text='+params['keywords']+'&experience='+params['experience']+'&employment='+params['employment']+'&schedule=remote&items_on_page=100'
-    result = []
     i = 0
     threads = []
     # используем треды для многопоточности
     while i < 5:
-        thread = Thread(target=getData_hh, args=(url, result))
+        thread = Thread(target=getData_hh, args=(url, data))
         threads.append(thread)
         thread.start()
         i += 1
         url += '&page=' + str(i)
     for thread in threads:
         thread.join()
-    return result
+    return data
 
 if __name__ == '__main__':
     url = 'https://hh.ru/search/vacancy?st=searchVacancy&text=Node.js&experience=doesNotMatter&employment=full&schedule=remote&items_on_page=100'

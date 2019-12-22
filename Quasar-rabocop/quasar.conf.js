@@ -86,7 +86,8 @@ module.exports = function (ctx) {
         'QUploader',
         'QRadio',
         'QCheckbox',
-        'QOptionGroup'
+        'QOptionGroup',
+        'QCircularProgress'
       ],
       directives: [
         'Ripple',

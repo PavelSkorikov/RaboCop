@@ -1,6 +1,6 @@
 <!-- страница регистрации нового пользователя -->
 <template>
-    <div class="q-pa-md">
+    <div class="q-pa-md flex flex-center">
       <!-- форма входа пользователя -->
       <q-form
         @submit="send"
@@ -12,6 +12,7 @@
                 square
                 outlined
                 v-model="user_data.username"
+                style="max-width: 400px"
                 label="Имя пользователя"
                 :rules="[ val => val && val.length > 0 || 'Пожалуйста введите Ваше имя',
                         val => val.length <= 20 || 'Имя не должно превышать 20 символов'
@@ -20,7 +21,9 @@
                   <q-icon name="account_box" />
                 </template>
             </q-input>
-            <q-input v-model="user_data.password"
+            <q-input
+                v-model="user_data.password"
+                style="max-width: 400px"
                 filled :type="isPwd ? 'password' : 'text'"
                 label="Пароль"
                 :rules="[ val => val && val.length > 0 || 'Пожалуйста введите пароль']">
@@ -35,7 +38,7 @@
                 />
                 </template>
             </q-input>
-        <div class="flex flex-end" style="margin-top: 40px">
+        <div class="flex flex-center" style="margin-top: 40px">
             <q-btn type="submit" color="primary" label="Войти" style="width: 200px; height: 40px" />
             <q-btn label="сброс" type="reset" color="primary" flat class="q-ml-sm" />
         </div>

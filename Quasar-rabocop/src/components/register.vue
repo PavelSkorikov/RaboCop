@@ -1,54 +1,60 @@
 <!-- страница регистрации нового пользователя -->
 <template>
-    <div class="q-pa-md">
+    <div class="q-pa-md flex flex-center">
       <!-- форма регистрации нового пользователя -->
       <q-form
         @submit="send"
         @reset="onReset"
         class="q-gutter-md"
       >
-        <div class="q-pa-md" style="font-size: 24px; color: dodgerblue">Регистрация:</div>
-            <q-input
-                square
-                outlined
-                v-model="user_data.username"
-                label="Имя пользователя"
-                :rules="[ val => val && val.length > 0 || 'Пожалуйста введите Ваше имя',
-                        val => val.length <= 20 || 'Имя не должно превышать 20 символов'
-                        ]">
-                <template v-slot:before>
-                  <q-icon name="account_box" />
-                </template>
-            </q-input>
-             <q-input
-                square
-                outlined
-                v-model="user_data.email"
-                type="email"
-                label="Адрес электронной почты"
-                filled
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Пожалуйста введите e-mail']">
-                <template v-slot:before>
-                  <q-icon name="mail" />
-                </template>
-             </q-input>
-            <q-input v-model="user_data.password"
-                filled :type="isPwd ? 'password' : 'text'"
-                label="Пароль"
-                :rules="[ val => val && val.length > 0 || 'Пожалуйста введите пароль']">
-                <template v-slot:before>
-                  <q-icon name="vpn_key" />
-                </template>
-                <template v-slot:append>
-                <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="isPwd = !isPwd"
-                />
-                </template>
-            </q-input>
-        <div class="flex flex-end" style="margin-top: 40px">
+        <div class="q-pa-md" style="font-size: 24px; color: dodgerblue">
+          Регистрация:
+        </div>
+        <q-input
+            square
+            outlined
+            v-model="user_data.username"
+            style="max-width: 400px"
+            label="Имя пользователя"
+            :rules="[ val => val && val.length > 0 || 'Пожалуйста введите Ваше имя',
+                    val => val.length <= 20 || 'Имя не должно превышать 20 символов'
+                    ]">
+            <template v-slot:before>
+              <q-icon name="account_box" />
+            </template>
+        </q-input>
+         <q-input
+            square
+            outlined
+            v-model="user_data.email"
+            style="max-width: 400px"
+            type="email"
+            label="Адрес электронной почты"
+            filled
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Пожалуйста введите e-mail']">
+            <template v-slot:before>
+              <q-icon name="mail" />
+            </template>
+         </q-input>
+        <q-input
+            v-model="user_data.password"
+            filled :type="isPwd ? 'password' : 'text'"
+            label="Пароль"
+            style="max-width: 400px"
+            :rules="[ val => val && val.length > 0 || 'Пожалуйста введите пароль']">
+            <template v-slot:before>
+              <q-icon name="vpn_key" />
+            </template>
+            <template v-slot:append>
+            <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+            />
+            </template>
+        </q-input>
+        <div class="flex flex-center" style="margin-top: 40px">
             <q-btn type="submit" color="primary" label="Отправить" style="width: 200px; height: 40px" />
             <q-btn label="сброс" type="reset" color="primary" flat class="q-ml-sm" />
         </div>

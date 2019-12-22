@@ -8,10 +8,12 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
 
+# модули парсеры добывающие данные о вакансиях
 from FindJob.helpers.hh import getVacancy_hh
 from FindJob.helpers.superjob import getVacancy_sj
+
+from threading import Thread
 
 # Create your views here.
 # метод который создает объект в базе данных
@@ -46,5 +48,11 @@ def vacancy_return(request):
         query_params['experience'] = request.GET.get('skill', '')
         query_params['employment'] = request.GET.get('employment', '')
 
-        data = getVacancy_hh(query_params) + getVacancy_sj(query_params)
+        data = []
+        hh = Thread(target=getVacancy_hh, args=(query_params, data))
+        hh.start()
+        sj = Thread(target=getVacancy_sj, args=(query_params, data))
+        sj.start()
+        hh.join()
+        sj.join()
         return JsonResponse(data, safe=False)
