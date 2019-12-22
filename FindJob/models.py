@@ -29,6 +29,9 @@ class Vacancy(models.Model):
     # для удобочитаемого отображения объекта в админке
     def __str__(self):
         return self.title
+    # сортируем по дате создания записи
+    class Meta:
+        ordering = ['createAt']
 
 # Модель поискового запроса
 class Question(models.Model):
@@ -47,19 +50,12 @@ class Question(models.Model):
         ('INTERN', 'Стажировка'),
     )
     employment_type = models.CharField(max_length=9, choices=EMPLOYMENT, default='NO')
-    # график работы
-    SCHEDULE = (
-        ('NO', 'Не знаю'),
-        ('FULL', 'Полный день'),
-        ('SHIFT', 'Сменный график'),
-        ('FLEX', 'Гибкий график'),
-        ('REMOTE', 'Вахтовый метод'),
-    )
-    schedule_work = models.CharField(max_length=9, choices=SCHEDULE, default='NO')
-    # дата создания записи в базе
     createAt = models.DateField(auto_now_add=True)
     # связанная модель пользователя, выполняющего поиск
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='1')
     # для удобочитаемого отображения объекта в админке
     def __str__(self):
         return self.keywords
+    # сортируем по дате создания записи
+    class Meta:
+        ordering = ['createAt']

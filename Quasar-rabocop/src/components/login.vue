@@ -70,7 +70,6 @@ export default {
           this.$axios.defaults.headers.common = {
             'Authorization': 'Token ' + localStorage.token
           }
-          this.user_data = {}
           document.location.href = this.appConfig.main_page
         })
         .catch((error) => {

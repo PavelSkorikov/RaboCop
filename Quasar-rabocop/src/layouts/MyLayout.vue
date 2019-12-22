@@ -15,22 +15,10 @@
         <q-toolbar-title>
           Поиск удаленной работы
         </q-toolbar-title>
-<!--    кнопки регистрации и авторизации-->
-        <q-btn v-if="noAuth" flat size='md' color='white' label='Регистрация' to="/register" />
-        <q-btn v-if="noAuth" flat color='white' label='Вход' to="/login" />
 <!--        меню авторизованного пользователя-->
-         <q-btn v-if="isAuth" color="primary" :label="username">
-        <q-menu>
-          <q-list style="min-width: 100px">
-            <q-item clickable v-close-popup to="/desktop">
-              <q-item-section>Личный кабинет</q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup @click="logout">
-              <q-item-section>Выход</q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
-      </q-btn>
+        <div v-if="isAuth">
+          {{ username }}
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -61,10 +49,10 @@
         </q-item>
         <q-item clickable v-ripple to="/desktop">
           <q-item-section avatar>
-            <q-icon name="account_box" />
+            <q-icon name="assignment" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Личный кабинет</q-item-label>
+            <q-item-label>Мои запросы</q-item-label>
             <q-item-label caption>для зарегистрированных пользователей</q-item-label>
           </q-item-section>
         </q-item>
@@ -77,22 +65,30 @@
             <q-item-label caption>forum.quasar.dev</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://twitter.quasar.dev">
+        <q-item v-if="noAuth" clickable to="/register">
           <q-item-section avatar>
-            <q-icon name="rss_feed" />
+            <q-icon name="assignment_ind" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Twitter</q-item-label>
-            <q-item-label caption>@quasarframework</q-item-label>
+            <q-item-label>Регистрация</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://facebook.quasar.dev">
+        <q-item v-if="noAuth" clickable to="/login">
           <q-item-section avatar>
-            <q-icon name="public" />
+            <q-icon name="account_circle" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Facebook</q-item-label>
-            <q-item-label caption>@QuasarFramework</q-item-label>
+            <q-item-label>ВХОД</q-item-label>
+            <q-item-label caption>войти в систему</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="isAuth" clickable @click="logout">
+          <q-item-section avatar>
+            <q-icon name="account_circle" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>ВЫЙТИ</q-item-label>
+            <q-item-label caption>войти в систему</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

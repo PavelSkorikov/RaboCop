@@ -138,7 +138,7 @@ export default {
           field: row => row.name,
           sortable: true,
           classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 300px'
+          style: 'max-width: 200px'
         },
         { name: 'compensation',
           align: 'left',
@@ -187,6 +187,7 @@ export default {
       data: []
     }
   },
+  // вычисляем количество найденных вакансий для отображения в заголовке таблицы
   computed: {
     numberVacancies: function () {
       let str = 'Найдено: ' + String(this.data.length)
@@ -201,7 +202,9 @@ export default {
           params: {
             keywords: this.keywords,
             skill: this.skill,
-            employment: this.employment_type.value
+            employment: this.employment_type.value,
+            saveQuery: this.saveQuery,
+            notification: this.notification
           }
         })
         .then((res) => {
@@ -232,17 +235,15 @@ export default {
   /* max height is important */
   .q-table__middle
     max-height: 1200px
-
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th /* bg color is important for th; just specify one */
     background-color: #fff
-
   thead tr:first-child th
     position: sticky
     font-size: 14px
-    color: white
-    background-color: #027BE3
+    color: black
+    background-color: beige
     top: 0
     opacity: 1
     z-index: 1
