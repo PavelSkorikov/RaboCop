@@ -38,30 +38,21 @@
             <q-item-label caption>перейти на главную страницу</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple to="/question">
-          <q-item-section avatar>
-            <q-icon name="search" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Найти</q-item-label>
-            <q-item-label caption>форма быстрого поиска</q-item-label>
-          </q-item-section>
-        </q-item>
         <q-item clickable v-ripple to="/desktop">
           <q-item-section avatar>
-            <q-icon name="assignment" />
+            <q-icon name="search" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Мои запросы</q-item-label>
             <q-item-label caption>для зарегистрированных пользователей</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
+        <q-item clickable v-ripple to="/inform">
           <q-item-section avatar>
-            <q-icon name="record_voice_over" />
+            <q-icon name="assignment" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Forum</q-item-label>
+            <q-item-label>Информация</q-item-label>
             <q-item-label caption>forum.quasar.dev</q-item-label>
           </q-item-section>
         </q-item>
