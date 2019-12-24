@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.views import APIView, Response
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import Http404
+from rest_framework import status
 from FindJob.serializers import *
 from FindJob.models import *
 from FindJob.permissions import *
@@ -39,20 +42,23 @@ class QuestionEditView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Question.objects.all()
     permission_classes = (IsOwner, )
 
-@csrf_exempt
-def vacancy_return(request):
-    if request.method == 'GET':
-        # вытаскиваем из запроса параметры поиска вакансии
-        query_params = {}
-        query_params['keywords'] = request.GET.get('keywords', '')
-        query_params['experience'] = request.GET.get('skill', '')
-        query_params['employment'] = request.GET.get('employment', '')
+class vacancy_return(APIView):
+    # if request.method == 'GET':
+    #     # вытаскиваем из запроса параметры поиска вакансии
+    #     query_params = {}
+    #     query_params['keywords'] = request.GET.get('keywords', '')
+    #     query_params['experience'] = request.GET.get('skill', '')
+    #     query_params['employment'] = request.GET.get('employment', '')
+    def post(self, request, format=JsonResponse):
+        print(request.data['employment'])
+        return Response(get_parseData(request.data))
 
-        data = []
-        hh = Thread(target=getVacancy_hh, args=(query_params, data))
-        hh.start()
-        sj = Thread(target=getVacancy_sj, args=(query_params, data))
-        sj.start()
-        hh.join()
-        sj.join()
-        return JsonResponse(data, safe=False)
+def get_parseData(params):
+    data = []
+    hh = Thread(target=getVacancy_hh, args=(params, data))
+    hh.start()
+    sj = Thread(target=getVacancy_sj, args=(params, data))
+    sj.start()
+    hh.join()
+    sj.join()
+    return data

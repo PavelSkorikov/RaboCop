@@ -3,7 +3,6 @@
     <!--    верхняя панель-->
     <q-header elevated>
       <q-toolbar>
-        <img alt="RaboCop" src="~assets/logo-white.png" style="width: 30px">
         <q-btn
           flat
           dense
@@ -38,7 +37,7 @@
             <q-item-label caption>перейти на главную страницу</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable v-ripple to="/desktop">
+        <q-item v-if="isAuth" clickable v-ripple to="/desktop">
           <q-item-section avatar>
             <q-icon name="search" />
           </q-item-section>

@@ -10,15 +10,15 @@
           Задайте параметры поиска:
         </div>
       <div class="row">
-        <div class="col-md-6 col-xs-12">
+        <div class="col-md-5 col-xs-12">
           <q-input
               style = 'width: 350px'
               dense
               square
               outlined
-              v-model="keywords"
+              v-model="query.keywords"
               label="Ключевые слова"
-              :rules="[ val => val && val.length > 0 || 'Please type something',
+              :rules="[ val => val && val.length > 0 || 'Пожалуйста наберите что-нибудь',
                       val => val.length <= 128 || 'Please use maximum 128 characters'
                       ]"
           />
@@ -27,7 +27,7 @@
               dense
               square
               outlined
-              v-model="employment_type"
+              v-model="query.employment"
               :options="options_employment"
               label="Тип занятости"
           />
@@ -37,22 +37,27 @@
               dense
               square
               outlined
-              v-model="skill"
-              :options="options_skill"
+              v-model="query.experience"
+              :options="options_experience"
               label="Опыт работы"
           />
         </div>
-        <div class="col-md-6 col-xs-12">
-          <div class="q-gutter-sm">
-            <q-checkbox v-model="saveQuery" label="Сохранить данный запрос" />
+        <div class="col-md-3 col-xs-12">
+          <div v-if="isAuth" class="q-gutter-sm">
+            <q-checkbox v-model="query.saveQuery" label="Сохранить данный запрос" />
           </div>
-          <div class="q-gutter-sm">
-            <q-checkbox v-model="notification" label="Включить оповещение о новых вакансиях по e-Mail" />
+          <div v-if="isAuth" class="q-gutter-sm">
+            <q-checkbox v-model="query.notification" label="Включить оповещение о новых вакансиях по e-Mail" />
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div style="text-align: right">
+            <img  src="../assets/logo.png" style="width: 150px; margin-top: 10px">
           </div>
         </div>
       </div>
-        <div class="flex flex-center" style="margin-top: 40px">
-          <q-btn type="submit" v-if="!isQuery" color="primary" label="Найти" style="width: 350px; height: 40px" />
+        <div class="flex flex-start" style="margin-top: 40px">
+          <q-btn type="submit" v-if="!isQuery" color="primary" label="Найти" style="width: 260px; height: 40px" />
           <q-btn label="сброс" v-if="!isQuery" type="reset" color="primary" flat class="q-ml-sm" />
              <q-circular-progress
                 v-if="isQuery"
@@ -86,10 +91,17 @@ export default {
   name: 'question',
   data () {
     return {
+      query: {
+        keywords: '',
+        employment: '',
+        experience: true,
+        notification: false,
+        saveQuery: false
+      },
       employment_type: '',
       keywords: '',
-      skill: '',
-      options_skill: [
+      experience: '',
+      options_experience: [
         {
           label: 'Есть опыт',
           value: 'doesNotMatter'
@@ -182,9 +194,11 @@ export default {
         rowsPerPage: 0
       },
       isQuery: false,
+      isAuth: localStorage.user,
       saveQuery: false,
       notification: false,
-      data: []
+      data: [],
+      err_message: ''
     }
   },
   // вычисляем количество найденных вакансий для отображения в заголовке таблицы
@@ -197,16 +211,16 @@ export default {
   methods: {
     send () {
       this.isQuery = true
-      this.$axios.get(this.appConfig.api_url + 'vacancy/list/',
-        {
-          params: {
-            keywords: this.keywords,
-            skill: this.skill,
-            employment: this.employment_type.value,
-            saveQuery: this.saveQuery,
-            notification: this.notification
-          }
-        })
+      this.$axios.post(this.appConfig.api_url + 'vacancy/list/', this.$qs.stringify(this.query))
+        // {
+        //   params: {
+        //     keywords: this.keywords,
+        //     experience: this.experience,
+        //     employment: this.employment_type.value,
+        //     saveQuery: this.saveQuery,
+        //     notification: this.notification
+        //   }
+        // })
         .then((res) => {
           console.log('Ответ сервера:', res)
           this.data = res.data
@@ -215,12 +229,20 @@ export default {
           })
           this.isQuery = false
         })
+        .catch((error) => {
+          this.err_message = error.message
+          this.$q.notify({
+            color: 'red-5',
+            textColor: 'white',
+            icon: 'warning',
+            message: this.err_message
+          })
+          this.isQuery = false
+        })
     },
     // метод сброса данных формы
     onReset () {
-      this.keywords = ''
-      this.skill = ''
-      this.employment_type = ''
+      this.query = {}
     },
     // метод перехода по ссылке
     link (evt, row) {
